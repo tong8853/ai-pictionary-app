@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 
 interface CanvasProps {
-  onSubmit: (imageData: string) => void;
+  onSubmit: (imageData: string, accessCode: string) => void;
   isLoading: boolean;
 }
 
@@ -11,6 +11,8 @@ export default function Canvas({ onSubmit, isLoading }: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasContent, setHasContent] = useState(false);
+  const [accessCode, setAccessCode] = useState("");
+  const [accessError, setAccessError] = useState("");
   const lastPos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -108,12 +110,18 @@ export default function Canvas({ onSubmit, isLoading }: CanvasProps) {
   }, []);
 
   const submitGuess = useCallback(() => {
+    if (!accessCode.trim()) {
+      setAccessError("请输入访问码");
+      return;
+    }
+    setAccessError("");
+    
     const canvas = canvasRef.current;
     if (!canvas || !hasContent || isLoading) return;
 
     const imageData = canvas.toDataURL("image/png");
-    onSubmit(imageData);
-  }, [hasContent, isLoading, onSubmit]);
+    onSubmit(imageData, accessCode);
+  }, [hasContent, isLoading, onSubmit, accessCode]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -147,6 +155,22 @@ export default function Canvas({ onSubmit, isLoading }: CanvasProps) {
         )}
       </div>
       
+      <div>
+        <input
+          type="password"
+          value={accessCode}
+          onChange={(e) => {
+            setAccessCode(e.target.value);
+            setAccessError("");
+          }}
+          placeholder="请输入访问码"
+          className="w-full px-4 py-3 bg-surface border-2 border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary transition-colors"
+        />
+        {accessError && (
+          <p className="text-error text-sm mt-1">{accessError}</p>
+        )}
+      </div>
+
       <div className="flex gap-3">
         <button
           onClick={clearCanvas}
