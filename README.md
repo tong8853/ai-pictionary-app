@@ -26,7 +26,7 @@ npm install
 npm run dev
 ```
 
-打开 [http://localhost:3001](http://localhost:3001) 开始体验。
+打开 [http://localhost:3000](http://localhost:3000) 开始体验。
 
 ## 项目结构
 
