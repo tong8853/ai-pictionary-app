@@ -79,7 +79,7 @@ export default function Home() {
       </main>
 
       <footer className="py-4 text-center text-text-secondary text-xs border-t border-border">
-        <p>Powered by Gemini 2.0 Flash</p>
+        <p>Powered by SiliconFlow Qwen2-VL</p>
       </footer>
     </div>
   );
