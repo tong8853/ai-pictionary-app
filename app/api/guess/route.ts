@@ -5,7 +5,13 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { image, accessCode } = body;
 
-    const validAccessCode = process.env.ACCESS_CODE || "wt123456";
+    const validAccessCode = process.env.ACCESS_CODE;
+    if (!validAccessCode) {
+      return NextResponse.json(
+        { error: "Server configuration error" },
+        { status: 500 }
+      );
+    }
     if (!accessCode || accessCode !== validAccessCode) {
       return NextResponse.json(
         { error: "Invalid access code" },
