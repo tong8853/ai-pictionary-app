@@ -3,7 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { image } = body;
+    const { image, accessCode } = body;
+
+    const validAccessCode = process.env.ACCESS_CODE || "wt123456";
+    if (!accessCode || accessCode !== validAccessCode) {
+      return NextResponse.json(
+        { error: "Invalid access code" },
+        { status: 401 }
+      );
+    }
 
     if (!image) {
       return NextResponse.json(

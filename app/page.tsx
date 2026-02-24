@@ -12,7 +12,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const handleSubmit = async (imageData: string) => {
+  const handleSubmit = async (imageData: string, accessCode: string) => {
     setIsLoading(true);
     setError(null);
     setShowConfetti(false);
@@ -23,7 +23,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ image: imageData }),
+        body: JSON.stringify({ image: imageData, accessCode }),
       });
 
       const data = await response.json();
